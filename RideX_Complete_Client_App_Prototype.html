@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>RideX — Complete Client App Prototype</title>
+<style>
+*{box-sizing:border-box}body{margin:0;font-family:Inter,Segoe UI,Arial,sans-serif;background:#10131a;color:#161923}
+button,input,select,textarea{font:inherit}button{cursor:pointer;border:0}.hidden{display:none!important}
+:root{--p:#5b4df6;--p2:#7668ff;--green:#16a34a;--red:#dc2626;--orange:#f59e0b;--bg:#f6f7fb;--muted:#707887;--border:#e6e8ef}
+.app-shell{min-height:100vh;display:flex;align-items:center;justify-content:center;padding:24px}
+.demo{width:min(1450px,100%);height:min(900px,calc(100vh - 48px));background:#fff;border-radius:26px;overflow:hidden;box-shadow:0 30px 100px #0008;display:flex}
+.left{width:235px;background:#111522;color:#fff;padding:22px 14px;display:flex;flex-direction:column}.brand{font-size:25px;font-weight:900;padding:8px 12px 25px}.brand span{color:#8579ff}.switch{background:#202536;border-radius:12px;padding:12px;margin-bottom:18px}.switch label{font-size:10px;color:#8d96aa;text-transform:uppercase}.switch select{width:100%;margin-top:6px;background:transparent;border:0;color:white;outline:0}.nav-title{font-size:10px;color:#69738a;text-transform:uppercase;letter-spacing:1px;padding:12px}.nav button{width:100%;padding:12px 13px;background:transparent;color:#adb5c5;text-align:left;border-radius:10px;margin:2px 0}.nav button.active,.nav button:hover{background:#292440;color:white}.client-note{margin-top:auto;background:#1b2030;padding:12px;border-radius:12px;font-size:11px;color:#aab1c0;line-height:1.5}
+.content{flex:1;background:var(--bg);overflow:auto}.top{height:66px;background:white;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;padding:0 24px;position:sticky;top:0;z-index:10}.top b{font-size:15px}.top small{color:var(--muted)}.avatar{width:36px;height:36px;border-radius:50%;background:#eceaff;color:var(--p);display:grid;place-items:center;font-weight:800}
+.page{padding:25px;max-width:1250px;margin:auto}.screen{display:none}.screen.active{display:block}h1{margin:0;font-size:25px}h2{margin:0 0 5px}.sub{color:var(--muted);margin:5px 0 22px;font-size:13px}
+.grid{display:grid;gap:15px}.g4{grid-template-columns:repeat(4,1fr)}.g3{grid-template-columns:repeat(3,1fr)}.g2{grid-template-columns:repeat(2,1fr)}.card{background:#fff;border:1px solid var(--border);border-radius:16px;padding:18px}.stat .lab{font-size:12px;color:var(--muted)}.stat .val{font-size:25px;font-weight:850;margin-top:7px}.up{color:var(--green);font-size:11px;margin-top:4px}.btn{padding:11px 15px;border-radius:10px;font-weight:750}.primary{background:var(--p);color:#fff}.secondary{background:#efedff;color:#4c40db}.ghost{background:#f0f2f6;color:#333b4a}.danger{background:#fee2e2;color:#b91c1c}.success{background:#dcfce7;color:#15803d}.row{display:flex;gap:9px;align-items:center}.between{display:flex;justify-content:space-between;align-items:center;gap:10px}.tag{font-size:10px;font-weight:800;border-radius:20px;padding:5px 8px;background:#eef0f5}.tag.g{background:#dcfce7;color:#15803d}.tag.r{background:#fee2e2;color:#b91c1c}.tag.o{background:#ffedd5;color:#c2410c}.tag.b{background:#e0e7ff;color:#4338ca}
+.map{height:300px;border-radius:14px;position:relative;overflow:hidden;background:#e9edf2;background-image:linear-gradient(30deg,transparent 46%,#cbd2dc 47%,#cbd2dc 49%,transparent 50%),linear-gradient(115deg,transparent 47%,#d4dae2 48%,#d4dae2 50%,transparent 51%);background-size:95px 95px}.road{position:absolute;left:-5%;top:55%;width:110%;height:8px;background:white;transform:rotate(-15deg);box-shadow:0 0 0 1px #cbd1da}.route{position:absolute;left:12%;top:64%;width:73%;height:5px;background:var(--p);transform:rotate(-15deg);border-radius:10px}.pin{position:absolute;width:18px;height:18px;border-radius:50% 50% 50% 0;transform:rotate(-45deg);background:var(--p);z-index:4}.pin i{display:block;width:6px;height:6px;background:white;border-radius:50%;margin:6px}.pa{left:14%;top:68%}.pb{right:15%;top:28%;background:var(--green)}.car{position:absolute;left:47%;top:50%;z-index:5;background:#111827;color:white;padding:6px 8px;border-radius:8px;font-size:10px}
+.field{display:grid;gap:6px;margin-bottom:10px}.field label{font-size:10px;font-weight:800;color:#687180}.field input,.field select,.field textarea{width:100%;border:1px solid var(--border);padding:11px;border-radius:10px;background:#fff;outline:0}.field textarea{height:75px;resize:none}
+.phone-wrap{display:flex;justify-content:center}.phone{width:350px;min-height:680px;background:#f6f7fb;border:7px solid #181b24;border-radius:34px;overflow:hidden;box-shadow:0 15px 40px #0002}.notch{height:23px;background:#181b24}.phone-head{background:#fff;padding:14px 17px}.phone-body{padding:14px}.phone .map{height:265px}.bottom-nav{display:flex;justify-content:space-around;background:white;border-top:1px solid var(--border);padding:12px 4px;margin-top:12px;font-size:10px;color:#747b89}.bottom-nav b{color:var(--p)}
+.app-card{background:white;border-radius:17px;padding:15px;box-shadow:0 8px 24px #1c244015;margin-top:-25px;position:relative;z-index:5}.ride{border:1px solid var(--border);border-radius:13px;padding:12px;display:flex;justify-content:space-between;align-items:center;margin:7px 0}.ride.sel{border:2px solid var(--p);background:#faf9ff}.mini{font-size:11px;color:var(--muted)}.divider{height:1px;background:var(--border);margin:12px 0}
+.table{width:100%;border-collapse:collapse}.table th,.table td{padding:12px 8px;border-bottom:1px solid var(--border);text-align:left;font-size:12px}.table th{color:var(--muted)}
+.bar{height:9px;background:#eceef4;border-radius:20px;overflow:hidden}.bar i{display:block;height:100%;background:var(--p)}.kline{display:flex;justify-content:space-between;padding:11px 0;border-bottom:1px solid var(--border);font-size:12px}
+.timeline{border-left:2px solid #ddd8ff;padding-left:18px}.event{position:relative;margin:0 0 18px}.event:before{content:"";position:absolute;left:-25px;top:2px;width:10px;height:10px;border-radius:50%;background:var(--p);border:3px solid white}.event b{font-size:12px}.event div{font-size:11px;color:var(--muted);margin-top:3px}
+.modal{position:fixed;inset:0;background:#0d1220aa;display:none;align-items:center;justify-content:center;z-index:100;padding:20px}.modal.show{display:flex}.modal-box{background:white;width:min(500px,100%);border-radius:20px;padding:22px;max-height:90vh;overflow:auto}.toast{position:fixed;bottom:24px;right:24px;background:#121722;color:white;padding:14px 18px;border-radius:12px;display:none;z-index:200;box-shadow:0 12px 30px #0004}.toast.show{display:block}
+.sos{border:2px solid #fecaca;background:#fff7f7}.sos .big{font-size:40px}.center{text-align:center}
+@media(max-width:950px){.demo{height:100vh;border-radius:0}.left{width:75px;padding:15px 8px}.brand{font-size:0}.brand span{font-size:21px}.switch{display:none}.nav button{font-size:0;text-align:center}.nav button:before{content:"●";font-size:18px}.nav-title,.client-note{display:none}.content{width:calc(100% - 75px)}.g4{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:650px){.app-shell{padding:0}.left{display:none}.content{width:100%}.page{padding:15px}.g4,.g3,.g2{grid-template-columns:1fr}.top{padding:0 15px}}
+</style>
+</head>
+<body>
+<div class="app-shell">
+<div class="demo">
+<aside class="left">
+  <div class="brand">Ride<span>X</span></div>
+  <div class="switch"><label>Demo Persona</label><select id="persona" onchange="switchPersona(this.value)">
+    <option value="admin">Central Admin</option><option value="passenger">Passenger</option><option value="driver">Driver</option><option value="support">City Support</option>
+  </select></div>
+  <div class="nav-title">Prototype</div>
+  <div class="nav">
+    <button class="active" data-screen="admin" onclick="go('admin',this)">▣ &nbsp; Dashboard</button>
+    <button data-screen="passenger" onclick="go('passenger',this)">● &nbsp; Passenger App</button>
+    <button data-screen="driver" onclick="go('driver',this)">◆ &nbsp; Driver App</button>
+    <button data-screen="support" onclick="go('support',this)">◈ &nbsp; City Support</button>
+  </div>
+  <div class="nav-title">Demo Scenarios</div>
+  <div class="nav">
+    <button onclick="openM('bookingM')">＋ &nbsp; New Booking</button>
+    <button onclick="openM('profileM')">⚙ &nbsp; User / KYC</button>
+    <button onclick="sos()">⚠ &nbsp; Emergency SOS</button>
+    <button onclick="openM('paymentM')">₹ &nbsp; Payment Flow</button>
+  </div>
+  <div class="client-note"><b>CLIENT DEMO</b><br>All integrations are simulated. This prototype demonstrates the intended product experience and feature scope.</div>
+</aside>
+
+<main class="content">
+<header><div><b id="title">Central Admin Dashboard</b><br><small>RideX • Interactive Product Prototype</small></div><div class="row"><span class="tag g">● Demo Online</span><div class="avatar">AD</div></div></header>
+<div class="page">
+
+<!-- ADMIN -->
+<section id="admin" class="screen active">
+<h1>Central Command Center</h1><p class="sub">System-wide visibility across rides, money, drivers, users, support and safety.</p>
+<div class="grid g4">
+<div class="card stat"><div class="lab">Today's Rides</div><div class="val" id="rides">1,284</div><div class="up">↑ 12.8%</div></div>
+<div class="card stat"><div class="lab">Gross Revenue</div><div class="val">₹4.82L</div><div class="up">↑ 8.4%</div></div>
+<div class="card stat"><div class="lab">Online Drivers</div><div class="val">438</div><div class="up">82% availability</div></div>
+<div class="card stat"><div class="lab">Active Users</div><div class="val">8,642</div><div class="up">↑ 4.1%</div></div>
+</div><br>
+<div class="grid g2">
+<div class="card"><div class="between"><b>Live Fleet & Ride Map</b><span class="tag g">LIVE</span></div><div class="map" style="margin-top:14px"><div class="road"></div><div class="route"></div><div class="pin pa"><i></i></div><div class="pin pb"><i></i></div><div class="car">🚕 DR-482 • 4 min</div></div></div>
+<div class="card"><div class="between"><b>Financial Control</b><span class="tag b">TODAY</span></div>
+<div class="kline"><span>Ride fares</span><b>₹4,82,400</b></div><div class="kline"><span>Driver payouts</span><b>₹3,52,150</b></div><div class="kline"><span>Platform revenue</span><b>₹1,30,250</b></div><div class="kline"><span>Refunds</span><b>₹12,450</b></div><div style="margin-top:14px"><div class="between"><span class="mini">Platform margin</span><b>27%</b></div><div class="bar"><i style="width:27%"></i></div></div></div>
+</div><br>
+<div class="grid g3">
+<div class="card"><b>AI Dispatch</b><p class="mini">Current matching performance</p><div class="kline"><span>Match success</span><b>96.4%</b></div><div class="kline"><span>Avg. pickup ETA</span><b>4m 12s</b></div><div class="kline"><span>Drivers matched</span><b>1,102</b></div><button class="btn secondary" style="margin-top:12px" onclick="openM('aiM')">View AI Engine</button></div>
+<div class="card"><b>Demand / Surge</b><p class="mini">Predictive heat zones</p><div class="kline"><span>High demand zones</span><b>7</b></div><div class="kline"><span>Current multiplier</span><b>1.2×</b></div><div class="kline"><span>Forecast confidence</span><b>91%</b></div><button class="btn secondary" style="margin-top:12px" onclick="openM('heatM')">Open Heat Map</button></div>
+<div class="card"><b>Safety Center</b><p class="mini">Real-time risk monitoring</p><div class="kline"><span>SOS active</span><b style="color:var(--red)">2</b></div><div class="kline"><span>Open disputes</span><b>14</b></div><div class="kline"><span>Fraud alerts</span><b>3</b></div><button class="btn danger" style="margin-top:12px" onclick="sos()">Open Safety Center</button></div>
+</div><br>
+<div class="card"><div class="between"><b>System-wide Ride / Rating Feed</b><button class="btn secondary" onclick="toast('Analytics report exported')">Export</button></div>
+<table class="table"><thead><tr><th>Ride</th><th>Passenger</th><th>Driver</th><th>Fare</th><th>Rating</th><th>Status</th></tr></thead><tbody>
+<tr><td>#RX10284</td><td>Rahul S.</td><td>Arjun K.</td><td>₹286</td><td>⭐ 5.0</td><td><span class="tag g">Completed</span></td></tr>
+<tr><td>#RX10283</td><td>Priya M.</td><td>Vikas R.</td><td>₹412</td><td>⭐ 4.8</td><td><span class="tag b">On Trip</span></td></tr>
+<tr><td>#RX10282</td><td>Neha P.</td><td>Mohit S.</td><td>₹198</td><td>⭐ 4.9</td><td><span class="tag o">Payment</span></td></tr>
+</tbody></table></div>
+</section>
+
+<!-- PASSENGER -->
+<section id="passenger" class="screen">
+<h1>Passenger Experience</h1><p class="sub">A complete consumer ride-booking journey from onboarding to rating.</p>
+<div class="phone-wrap"><div class="phone">
+<div class="notch"></div><div class="phone-head"><div class="between"><b>RideX</b><span>🔔</span></div><div class="mini">Good evening, Akash 👋</div></div>
+<div class="phone-body" id="passengerHome">
+<div class="map"><div class="road"></div><div class="route"></div><div class="pin pa"><i></i></div><div class="pin pb"><i></i></div></div>
+<div class="app-card"><div class="field"><label>PICKUP</label><input value="Current Location"></div><div class="field"><label>WHERE TO?</label><input id="dest" value="Panipat City Mall"></div><div class="row"><button class="btn primary" style="flex:1" onclick="findRide()">Find Ride</button><button class="btn secondary" onclick="openM('bookingM')">Schedule</button></div></div>
+<div style="margin-top:15px" class="grid g2">
+<button class="btn ghost" onclick="openM('savedM')">⭐ Saved Places</button><button class="btn ghost" onclick="openM('paymentM')">💳 Payment</button>
+</div><button class="btn danger" style="width:100%;margin-top:9px" onclick="sos()">🆘 Emergency SOS</button>
+</div>
+<div id="rideResult" class="phone-body hidden">
+<div class="between"><b>Select a ride</b><span class="tag g">AI matched</span></div>
+<div class="ride sel"><div><b>RideX Prime</b><div class="mini">4 seats • 4 min • AC</div></div><b>₹286</b></div>
+<div class="ride"><div><b>RideX Mini</b><div class="mini">4 seats • 6 min</div></div><b>₹218</b></div>
+<div class="ride"><div><b>RideX XL</b><div class="mini">6 seats • 7 min</div></div><b>₹382</b></div>
+<div class="divider"></div><div class="kline"><span>Estimated fare</span><b>₹286</b></div><div class="kline"><span>Payment</span><b>UPI •••• 9281</b></div>
+<button class="btn primary" style="width:100%;margin-top:12px" onclick="confirmBooking()">Confirm & Pay</button><button class="btn ghost" style="width:100%;margin-top:8px" onclick="resetPassenger()">Back</button>
+</div>
+<div id="tracking" class="phone-body hidden">
+<div class="map"><div class="road"></div><div class="route"></div><div class="pin pa"><i></i></div><div class="pin pb"><i></i></div><div class="car">🚕 Arjun • 3 min</div></div>
+<div class="app-card"><div class="between"><div><b>Arjun K.</b><div class="mini">⭐ 4.92 • RideX Prime</div></div><b>₹286</b></div><div class="divider"></div><div class="timeline"><div class="event"><b>Driver is on the way</b><div>Arriving in 3 minutes</div></div><div class="event"><b>Ride confirmed</b><div>Payment method: UPI</div></div><div class="event"><b>Pickup</b><div>Current Location</div></div></div><div class="row"><button class="btn ghost" style="flex:1" onclick="toast('Calling driver…')">📞 Call</button><button class="btn ghost" style="flex:1" onclick="toast('Chat opened')">💬 Chat</button><button class="btn danger" style="flex:1" onclick="sos()">🆘 SOS</button></div></div>
+<button class="btn success" style="width:100%;margin-top:10px" onclick="completeRide()">Simulate Ride Completion</button>
+</div>
+<div id="rating" class="phone-body hidden center"><div style="font-size:45px">🎉</div><h2>Ride Completed</h2><p class="mini">How was your experience with Arjun?</p><div style="font-size:35px;margin:20px">⭐ ⭐ ⭐ ⭐ ⭐</div><textarea placeholder="Add feedback (optional)" style="width:100%;height:80px;border:1px solid var(--border);border-radius:10px;padding:10px"></textarea><button class="btn primary" style="width:100%;margin-top:12px" onclick="toast('Thank you! Rating submitted');resetPassenger()">Submit Rating</button></div>
+<div class="bottom-nav"><b>⌂<br>Home</b><span>◷<br>Rides</span><span>💳<br>Wallet</span><span>☻<br>Profile</span></div>
+</div></div>
+</section>
+
+<!-- DRIVER -->
+<section id="driver" class="screen">
+<h1>Driver Experience</h1><p class="sub">Driver onboarding, availability, dispatch, navigation, earnings and safety.</p>
+<div class="grid g4"><div class="card stat"><div class="lab">Today's Earnings</div><div class="val">₹2,840</div><div class="up">18 completed rides</div></div><div class="card stat"><div class="lab">Rating</div><div class="val">⭐ 4.92</div><div class="up">Excellent</div></div><div class="card stat"><div class="lab">Acceptance</div><div class="val">94%</div><div class="up">↑ 2.1%</div></div><div class="card stat"><div class="lab">Next Payout</div><div class="val">₹8,460</div><div class="up">Friday</div></div></div><br>
+<div class="grid g2">
+<div class="card"><div class="between"><b>Driver Status</b><span class="tag g" id="onlineTag">ONLINE</span></div><div class="row" style="margin-top:15px"><button class="btn success" onclick="toast('You are now accepting ride requests')">Go Online</button><button class="btn ghost" onclick="toast('Driver paused temporarily')">Pause</button></div><div class="divider"></div><b>Vehicle</b><div class="kline"><span>Vehicle</span><b>Hyundai Aura</b></div><div class="kline"><span>Registration</span><b>•••• 4821</b></div><div class="kline"><span>Verification</span><span class="tag g">Verified</span></div></div>
+<div class="card"><div class="between"><b>Incoming Ride</b><span class="tag o">NEW REQUEST</span></div><div class="kline"><span>Pickup</span><b>Model Town</b></div><div class="kline"><span>Destination</span><b>Railway Station</b></div><div class="kline"><span>Distance</span><b>6.4 km</b></div><div class="kline"><span>Estimated earnings</span><b>₹238</b></div><div class="row" style="margin-top:13px"><button class="btn danger" style="flex:1" onclick="toast('Request rejected')">Reject</button><button class="btn primary" style="flex:1" onclick="driverAccepted()">Accept</button></div></div>
+</div><br>
+<div class="grid g2"><div class="card"><b>Navigation & Live Trip</b><div class="map" style="margin-top:12px"><div class="road"></div><div class="route"></div><div class="pin pa"><i></i></div><div class="pin pb"><i></i></div><div class="car">🚕 Passenger • 3 min</div></div><div class="row" style="margin-top:10px"><button class="btn secondary" onclick="toast('Google Maps / Mappls navigation would open')">Navigate</button><button class="btn danger" onclick="sos()">SOS</button></div></div>
+<div class="card"><b>Earnings & Trips</b><div class="kline"><span>Today</span><b>₹2,840</b></div><div class="kline"><span>This week</span><b>₹14,620</b></div><div class="kline"><span>Platform fee</span><b>₹1,120</b></div><div class="kline"><span>Net payout</span><b>₹13,500</b></div><button class="btn secondary" style="margin-top:12px" onclick="openM('earnM')">View Full Earnings</button></div></div>
+</section>
+
+<!-- SUPPORT -->
+<section id="support" class="screen">
+<h1>City Support Operations</h1><p class="sub">City-level support, disputes, live ride assistance and emergency response.</p>
+<div class="grid g4"><div class="card stat"><div class="lab">Open Tickets</div><div class="val">27</div></div><div class="card stat"><div class="lab">Live Rides</div><div class="val">84</div></div><div class="card stat"><div class="lab">Avg Response</div><div class="val">2m 18s</div></div><div class="card stat"><div class="lab">SOS Alerts</div><div class="val" style="color:var(--red)">2</div></div></div><br>
+<div class="grid g2"><div class="card"><div class="between"><b>Support Queue</b><button class="btn primary" onclick="openM('ticketM')">＋ New Ticket</button></div><table class="table"><thead><tr><th>ID</th><th>Issue</th><th>User</th><th>Priority</th><th>Status</th></tr></thead><tbody><tr><td>#TK291</td><td>Fare dispute</td><td>Rahul S.</td><td><span class="tag o">High</span></td><td>Open</td></tr><tr><td>#TK290</td><td>Driver issue</td><td>Priya M.</td><td><span class="tag r">Urgent</span></td><td>Assigned</td></tr><tr><td>#TK289</td><td>Lost item</td><td>Aman J.</td><td><span class="tag">Normal</span></td><td>Pending</td></tr></tbody></table></div>
+<div class="card sos"><div class="between"><b>Emergency Monitor</b><span class="tag r">2 ACTIVE</span></div><div class="map" style="margin-top:12px"><div class="pin pa" style="background:var(--red)"><i></i></div><div class="pin pb" style="background:var(--red)"><i></i></div></div><div class="row" style="margin-top:10px"><button class="btn danger" onclick="sos()">Open SOS Incident</button><button class="btn secondary" onclick="toast('Emergency contact workflow initiated')">Escalate</button></div></div></div><br>
+<div class="card"><div class="between"><b>Live Ride Assistance</b><span class="tag g">84 LIVE</span></div><div class="kline"><span>#RX10283 • Priya M. → Driver Vikas</span><button class="btn secondary" onclick="toast('Live ride opened')">Monitor</button></div><div class="kline"><span>#RX10280 • Neha P. → Driver Mohit</span><button class="btn secondary" onclick="toast('Live ride opened')">Monitor</button></div></div>
+</section>
+
+</div></main></div></div>
+
+<!-- MODALS -->
+<div class="modal" id="bookingM"><div class="modal-box"><div class="between"><h2>Book / Schedule Ride</h2><button class="btn ghost" onclick="closeM('bookingM')">✕</button></div><p class="mini">Immediate booking or advance scheduling with automated dispatch.</p><div class="field"><label>PICKUP</label><input value="Current Location"></div><div class="field"><label>DESTINATION</label><input value="Panipat Railway Station"></div><div class="row"><div class="field" style="flex:1"><label>DATE</label><input type="date"></div><div class="field" style="flex:1"><label>TIME</label><input type="time" value="10:00"></div></div><div class="field"><label>RIDE TYPE</label><select><option>RideX Mini</option><option>RideX Prime</option><option>RideX XL</option><option>Premium</option></select></div><button class="btn primary" style="width:100%" onclick="closeM('bookingM');toast('Scheduled ride created • dispatch will start before pickup')">Schedule Ride</button></div></div>
+<div class="modal" id="paymentM"><div class="modal-box"><div class="between"><h2>Secure Payment</h2><button class="btn ghost" onclick="closeM('paymentM')">✕</button></div><div class="ride sel"><span>Ride fare</span><b>₹286</b></div><div class="field"><label>PAYMENT METHOD</label><select><option>UPI •••• 9281</option><option>Visa •••• 4219</option><option>RideX Wallet • ₹820</option></select></div><button class="btn primary" style="width:100%" onclick="closeM('paymentM');toast('Payment authorized • gateway webhook verified')">Pay ₹286</button><p class="mini center" style="margin-top:10px">Demo payment only — no real transaction occurs.</p></div></div>
+<div class="modal" id="profileM"><div class="modal-box"><div class="between"><h2>Identity & KYC</h2><button class="btn ghost" onclick="closeM('profileM')">✕</button></div><div class="card" style="margin-top:12px"><div class="between"><b>Mobile OTP</b><span class="tag g">Verified</span></div><p class="mini">+91 ••••••4821</p></div><div class="card" style="margin-top:10px"><div class="between"><b>Identity Verification</b><span class="tag g">Verified</span></div><p class="mini">Verified through authorized KYC/Aadhaar ecosystem. Sensitive identity data is not displayed here.</p></div><button class="btn primary" style="width:100%;margin-top:12px" onclick="closeM('profileM');toast('Profile verification details loaded')">Continue</button></div></div>
+<div class="modal" id="aiM"><div class="modal-box"><div class="between"><h2>AI Dispatch Engine</h2><button class="btn ghost" onclick="closeM('aiM')">✕</button></div><p class="mini">Demo visualization of the future intelligent matching engine.</p><div class="kline"><span>Nearby drivers</span><b>42</b></div><div class="kline"><span>Eligible drivers</span><b>18</b></div><div class="kline"><span>Best ETA</span><b>3m 42s</b></div><div class="kline"><span>Match confidence</span><b>96.4%</b></div><div class="kline"><span>Scoring signals</span><b>ETA + proximity + vehicle + reliability</b></div><button class="btn primary" style="width:100%;margin-top:12px" onclick="closeM('aiM');toast('Driver #DR-482 selected by dispatch engine')">Simulate Match</button></div></div>
+<div class="modal" id="heatM"><div class="modal-box"><div class="between"><h2>Predictive Demand Map</h2><button class="btn ghost" onclick="closeM('heatM')">✕</button></div><div class="map" style="margin-top:12px;background:radial-gradient(circle at 30% 60%,#ff8b8b88 0 12%,transparent 27%),radial-gradient(circle at 70% 30%,#8b82ff99 0 13%,transparent 30%),radial-gradient(circle at 75% 75%,#ffcb6999 0 10%,transparent 26%),#e9edf2"></div><div class="kline"><span>High demand zones</span><b>7</b></div><div class="kline"><span>Forecast confidence</span><b>91%</b></div><button class="btn primary" style="width:100%;margin-top:12px" onclick="closeM('heatM')">Close</button></div></div>
+<div class="modal" id="savedM"><div class="modal-box"><div class="between"><h2>Saved Places</h2><button class="btn ghost" onclick="closeM('savedM')">✕</button></div><div class="ride"><span>🏠 Home</span><b>Sector 12</b></div><div class="ride"><span>💼 Work</span><b>Knowledge Park</b></div><div class="ride"><span>🚉 Railway Station</span><b>Panipat</b></div></div></div>
+<div class="modal" id="earnM"><div class="modal-box"><div class="between"><h2>Driver Earnings</h2><button class="btn ghost" onclick="closeM('earnM')">✕</button></div><div class="grid g2"><div class="card"><div class="mini">Gross</div><h2>₹14,620</h2></div><div class="card"><div class="mini">Net</div><h2>₹13,500</h2></div></div><div class="kline"><span>Ride fares</span><b>₹14,620</b></div><div class="kline"><span>Platform fee</span><b>-₹1,120</b></div><div class="kline"><span>Bonuses</span><b>₹0</b></div><button class="btn primary" style="width:100%;margin-top:12px" onclick="closeM('earnM')">Done</button></div></div>
+<div class="modal" id="ticketM"><div class="modal-box"><div class="between"><h2>Create Support Ticket</h2><button class="btn ghost" onclick="closeM('ticketM')">✕</button></div><div class="field"><label>CATEGORY</label><select><option>Fare Dispute</option><option>Driver Issue</option><option>Lost Item</option><option>Payment</option><option>Safety</option></select></div><div class="field"><label>DESCRIPTION</label><textarea placeholder="Describe the issue…"></textarea></div><button class="btn primary" style="width:100%" onclick="closeM('ticketM');toast('Ticket #TK292 created and assigned to city support')">Create Ticket</button></div></div>
+<div class="modal" id="sosM"><div class="modal-box sos center"><div class="sos big">🆘</div><h2>Emergency SOS Triggered</h2><p class="mini">This prototype simulates the full emergency workflow.</p><div class="kline"><span>City Support</span><b style="color:var(--green)">Notified ✓</b></div><div class="kline"><span>Trusted Contacts</span><b style="color:var(--green)">Notified ✓</b></div><div class="kline"><span>Live GPS</span><b style="color:var(--green)">Streaming ✓</b></div><div class="kline"><span>Emergency escalation</span><b>Ready</b></div><button class="btn danger" style="width:100%;margin-top:14px" onclick="closeM('sosM')">End Demo Alert</button></div></div>
+
+<div class="toast" id="toast"></div>
+<script>
+const names={admin:'Central Admin Dashboard',passenger:'Passenger App',driver:'Driver App',support:'City Support Team'};
+function go(id,btn){document.querySelectorAll('.screen').forEach(x=>x.classList.remove('active'));document.getElementById(id).classList.add('active');document.querySelectorAll('.nav button[data-screen]').forEach(x=>x.classList.remove('active'));if(btn)btn.classList.add('active');document.getElementById('persona').value=id;document.getElementById('title').textContent=names[id]}
+function switchPersona(v){const b=document.querySelector('.nav button[data-screen="'+v+'"]');go(v,b)}
+function openM(id){document.getElementById(id).classList.add('show')}
+function closeM(id){document.getElementById(id).classList.remove('show')}
+function toast(m){const t=document.getElementById('toast');t.textContent=m;t.classList.add('show');setTimeout(()=>t.classList.remove('show'),3000)}
+function sos(){openM('sosM')}
+function findRide(){document.getElementById('passengerHome').classList.add('hidden');document.getElementById('rideResult').classList.remove('hidden');toast('AI matched 8 nearby drivers')}
+function confirmBooking(){document.getElementById('rideResult').classList.add('hidden');document.getElementById('tracking').classList.remove('hidden');toast('Ride confirmed • Driver Arjun is 3 minutes away')}
+function completeRide(){document.getElementById('tracking').classList.add('hidden');document.getElementById('rating').classList.remove('hidden');toast('Ride completed • Payment settled')}
+function resetPassenger(){document.getElementById('rating').classList.add('hidden');document.getElementById('passengerHome').classList.remove('hidden')}
+function driverAccepted(){toast('Ride accepted • Passenger notified • Navigation started')}
+document.querySelectorAll('.modal').forEach(m=>m.addEventListener('click',e=>{if(e.target===m)m.classList.remove('show')}));
+</script>
+</body>
+</html>
